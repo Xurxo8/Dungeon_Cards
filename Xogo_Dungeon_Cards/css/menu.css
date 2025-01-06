@@ -1,0 +1,76 @@
+* {
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 0;
+	margin: 0;
+	color: white;
+}
+
+:root{
+	--fondo: #24272c;
+	--carta: #383838;
+	--puntos: #fce76d;
+	--vida: #d08d60;
+	--dourado: #daa520;
+	--sair: #424242;
+	--gris: #777777;
+}
+
+body{
+	background-color: var(--fondo);
+
+	& #inicio{
+		width: 30%;
+		position: relative;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, 0%);
+		height: 100vh;
+
+		& #titulo{
+			height: 50%;
+			display: flex;
+			justify-content: center;
+			
+		}
+
+		& #menu{
+			height: 50vh;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			grid-template-rows: repeat(2, 1fr);
+			position: absolute;
+			bottom: 0;
+
+			& #seleccionPersonaxe{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				& img{
+					width: 45%;
+				}
+			}
+
+			& #xogar{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				& p{
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 25%;
+					height: 25%;
+
+					& img{
+						width: 95%;
+						background-color: var(--boton);
+						padding: 5px 15px;
+						border: 2px solid white;
+					}
+				}
+			}			
+		}
+	}
+}

@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Silkscreen:wght@400;700&family=Tektur:wght@400..900&display=swap');
+
+* {
+	font-family: "Silkscreen", sans-serif;
+}
+
+body{
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+
+	& #taboleiro{
+		height: 80%;
+		width: 30%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		& #puntuacion{
+			height: 3rem;
+			display: flex;
+			justify-content: end;
+			align-items: center;
+
+			& #puntos{
+				font-size: 45px;
+				font-weight: bold;
+				color: var(--puntos);
+				font-weight: 500;
+			}
+
+			& img{
+				height: 70%;
+				margin-top: 10px;
+			}
+		}
+
+		& #cuadricula{
+			height: 90%;
+			width: 100%;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			grid-template-rows: repeat(3, 1fr);
+
+			justify-items: center;
+			align-items: center;
+
+			& .cela{
+				position: relative;
+				height: 95%;
+				width: 95%;
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				background-color: var(--carta);
+				cursor: pointer;
+
+				& img{
+					position: relative;
+					height: 70%;
+					width: 90%;
+				}
+
+				& .puntosVida{
+					position: absolute;
+					top: 0;
+					right: 2%;
+					width: 50%;
+					display: flex;
+					flex-direction: column;
+					align-items: end;
+
+					& label{
+						color: var(--vida);
+						font-weight: bolder;
+					}
+
+					& img{
+						height: 25px;
+						width: 25px;
+					}
+				}
+
+				& .cantidade{
+					position: absolute;
+					bottom: 0;
+					left: 1%;
+					font-weight: bolder;
+					font-size: 1.1rem;
+					color: var(--gris);
+				}
+			}
+
+			& #xogador{
+				position: relative;
+				height: calc(95% - 5px);/* A anchura e altura de .celda está nun 95% non no 100% */
+				width: calc(95% - 5px);
+				border: 3px solid var(--dourado);
+        transition: 1s;
+
+				& p{
+					color: var(--dourado);
+				}
+
+				& #arma{
+					position: absolute;
+					z-index: 1;
+					top: 20%;
+					left: -20%;
+					height: 85%;
+					width: 85%;
+					object-fit: contain;
+				}
+			}
+		}
+
+		& #menuInferior{
+			height: 3rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0 5px;
+
+			& #sair{
+				height: 2.5rem;
+				width: 2.5rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: var(--sair);
+				cursor: pointer;
+
+				& p{
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					& img{
+						height: 1.5rem;
+						width: 1.5rem;
+					}
+				}
+			}
+
+			& .itemActual{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				& img{
+					height: 3rem;
+				}
+
+				& #frecha{
+					height: 1.5rem;
+				}
+			}
+		}
+	}
+}
