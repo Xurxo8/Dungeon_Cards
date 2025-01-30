@@ -1,3 +1,4 @@
+// Cargar pantalla de inicio
 function cargarMenu() {
   document.body.innerHTML = `
     <div id="inicio">
@@ -18,6 +19,7 @@ function cargarMenu() {
   `;
 }
 
+// Cargar a mazmorra
 function cargarMazmorra() {
 	document.body.innerHTML = `
 		<div id="taboleiro">
@@ -49,9 +51,9 @@ function cargarMazmorra() {
 // Xerar os items e personaxes do taboleiro
 function cargarCuadricula() {
 	const NUM_CELAS = 9;
-	const VIDA_MAXIMA = 10; // Puntos de saude totais do personaxe
+	const VIDA_MAXIMA = 10; // Puntos de saude maxima do personaxe
 	let puntosVida = 10; // Vida do xogador
-	let vidaMonstro
+	let vidaMonstro;
 	let danoArma = 10;
 
 	for (let i = 0; i < NUM_CELAS; i++) {
