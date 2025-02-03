@@ -1,20 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 3.5.2.2
--- http://www.phpmyadmin.net
---
--- Servidor: 127.0.0.1
--- Xerado en: 8 de Ene de 2025 ás 14:26
--- Versión do servidor: 5.5.27
--- Versión do PHP: 5.4.7
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de datos: `dungeonCards`
@@ -26,74 +11,121 @@ USE `dungeonCards`;
 -- --------------------------------------------------------
 
 --
--- Estrutura da táboa `cartas`
+-- Estrutura da táboa `arma`
 --
 
-CREATE TABLE IF NOT EXISTS `cartas` (
-	`idCarta` tinyint NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `arma` (
+	`codigo` tinyint NOT NULL AUTO_INCREMENT,
 	`nome` varchar(30) NOT NULL,
-	`tipoCarta` ENUM('item', 'monstro') NOT NULL, 
-	`vida` INT DEFAULT 0, /* só para os monstros */
-	`dano` INT DEFAULT 0, /* só para as armas */
-	`puntosPartida` INT DEFAULT 0, /* só para as moedas */
-	`puntosVida` INT DEFAULT 0, /* só para as pocions */
-	PRIMARY KEY (`idCarta`)
+	`dano` INT NOT NULL,
+	PRIMARY KEY (`codigo`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 --
--- Insertar os datos na táboa `cartas`
+-- Insertar os datos na táboa `arma`
 --
 
-INSERT INTO `cartas` (`nome`,  `tipoCarta`, `vida`, `dano`, `puntosPartida`, `puntosVida`) VALUES
-	('cofre', 'item', 0, 0, 0, 0),
-	('espada', 'item', 0, 10, 0, 0),
-	('espada2', 'item', 0, 15, 0, 0),
-	('esqueleto', 'inimigo', 5, 0, 0, 0),
-	('magoAzul', 'inimigo', 7, 0, 0, 0),
-	('magoVermello', 'inimigo', 10, 0, 0, 0),
-	('maza', 'item', 0, 15, 0, 0),
-	('moeda', 'item', 0, 0, 1, 0),
-	('monstro1', 'inimigo', 8, 0, 0, 0),
-	('monstro2', 'inimigo', 5, 0, 0, 0),
-	('monstro3', 'inimigo', 10, 0, 0, 0),
-	('monstroAzul', 'inimigo', 12, 0, 0, 0),
-	('morcego', 'inimigo', 1, 0, 0, 0),
-	('necromancer', 'inimigo', 20, 0, 0, 0),
-	('pocionVeleno', 'item', 0, 5, 0, 0),
-	('pocionVida', 'item', 0, 0, 0, 5),
-	('zombie', 'inimigo', 3, 0, 0, 0);
+INSERT INTO `arma` (`nome`, `dano`) VALUES
+	('espada', 10),
+	('espada2', 12),
+	('maza', 20);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da táboa `personaxes`
+-- Estrutura da táboa `personaxe`
 --
 
-CREATE TABLE IF NOT EXISTS `personaxes`(
-	`codPersonaxe` tinyint NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `personaxe`(
+	`codigo` tinyint NOT NULL AUTO_INCREMENT,
 	`nome` varchar(20) NOT NULL,
 	`vida` INT NOT NULL,
-	`armaInicial` varchar(20),
-	PRIMARY KEY `codPersonaxe`
-)ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+	`cod_arma` tinyint NOT NULL,
+	PRIMARY KEY (`codigo`),
+	FOREIGN KEY (`cod_arma`) REFERENCES `arma` (`codigo`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 -- 
 -- Insertar os datos na taboa `personaxes`
 -- 
 
-INSERT INTO `personaxes` (`nome`, `vida`, `armaInicial`) VALUES
-	('alquimista', 10, `espada`),
-	('asasina', 8, `espada`),
-	('cabaleiro', 12, `espada`),
-	('cabaleiro2', 12, `espada`),
-	('cactus', 8, `espada`),
-	('ferreiro', 10, `espada`),
-	('granadeiro', 10, `espada`),
-	('ladron', 10, `espada`),
-	('mago', 8, `espada`),
-	('vampiro', 8, `espada2`),
-	('vikingo', 8, `maza`);
+INSERT INTO `personaxe` (`nome`, `vida`, `cod_arma`) VALUES
+	('alquimista', 10, 1),
+	('asasina', 8, 2),
+	('cabaleiro', 12, 3),
+	('cabaleiro2', 12, 1),
+	('cactus', 8, 1),
+	('ferreiro', 10, 1),
+	('granadeiro', 10, 3),
+	('ladron', 10, 2),
+	('mago', 8, 1),
+	('vampiro', 8, 2),
+	('vikingo', 8, 3);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- --------------------------------------------------------
+
+-- 
+-- Estrutura da táboa `inimigo`
+-- 
+
+CREATE TABLE IF NOT EXISTS `inimigo`(
+	`codigo` tinyint NOT NULL AUTO_INCREMENT,
+	`nome` varchar(20) NOT NULL,
+	`vida` INT NOT NULL,
+	`dificultade` varchar(15) NOT NULL,
+	PRIMARY KEY (`codigo`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+-- 
+-- Inserir os datos na taboa `inimigo`
+-- 
+
+INSERT INTO `inimigo` (`nome`, `vida`, `dificultade`) VALUES
+	('esqueleto', 5, 'facil'),
+	('magoAzul', 8, 'normal'),
+	('magoVermello', 9, 'normal'),
+	('monstro1', 3, 'facil'),
+	('monstro2', 4, 'facil'),
+	('monstro3', 10, 'dificil'),
+	('monstroAzul', 12, 'dificil'),
+	('morcego', 3, 'facil'),
+	('necromancer', 15, 'dificil'),
+	('zombie', 7, 'normal');
+
+-- 
+-- Estrutura táboa `obxecto`
+-- 
+
+CREATE TABLE IF NOT EXISTS `obxecto`(
+	`codigo` tinyint NOT NULL AUTO_INCREMENT,
+	`nome` varchar(20) NOT NULL,
+	`puntos_vida` varchar(20) NOT NULL,
+	`puntos_partida` varchar(20) NOT NULL,
+	PRIMARY KEY (`codigo`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+
+-- 
+-- Inserir os datos na táboa `obxecto`
+-- 
+
+INSERT INTO `obxecto` (`nome`, `puntos_vida`, `puntos_partida`) VALUES
+	('cofre', 0, 0),
+	('pocion_veleno', -5, 0),
+	('pocion_vida', 5, 0),
+	('moeda', 0, 1); -- O valor variará cun multiplicador según avance a partida
+
+-- --------------------------------------------------------
+
+-- 
+-- Estrutura da táboa `clasificación`
+-- 
+
+CREATE TABLE IF NOT EXISTS `clasificacion` (
+	`codigo` tinyint NOT NULL AUTO_INCREMENT,
+	`nome_xogador` varchar(30) NOT NULL,
+	`puntuacion` INT NOT NULL,
+	PRIMARY KEY (`codigo`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+-- Os datos inseriranse ao rematar a partida
