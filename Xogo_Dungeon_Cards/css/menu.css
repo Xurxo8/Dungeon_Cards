@@ -30,9 +30,25 @@ body{
 		flex-direction: column;
 
 		& #titulo{
-			height: 50%;
+			height: 70%;
 			display: flex;
 			justify-content: center;
+			position: fixed;
+
+			& .antorcha{
+				position: absolute;
+				width: 8rem;
+			}
+
+			& #antorcha1{
+				top: 50%;
+				right: 5%;
+			}
+
+			& #antorcha2{
+				top: 50%;
+				left: 5%;
+			}
 		}
 
 		& #menu{
