@@ -2,20 +2,19 @@
 function cargarMenu() {
 	document.body.innerHTML = `
 		<div id="inicio">
-		<div id="titulo"><img src="imaxes/DungeonCardsPressImages/Logo/Logo3.png" alt="logo"></div>
-		<div id="menu">
-			<!-- <div id="seleccionPersonaxe"><img src="imaxes/DungeonCardsPressImages/Characters/Knight.png" alt="personaxe seleccionado"></div>
-			<div id="xogar">
-				<p onclick="cargarMazmorra()"><img src="imaxes/logos/boton_xogar.svg" alt="boton xogar"></p>
-			</div> -->
-
-			<ul>
-				<li id="seleccionPersonaxe">Seleccionar personaxe</li>
-				<li id="cargarClasificacion">Taboa clasificatoria</li>
-				<li id="xogar" onclick="cargarMazmorra()">Comezar</li>
-			</ul>
+			<div id="titulo">
+				<img src="imaxes/Logo/Logo4.png" alt="logo">
+				<img id="antorcha1" class="antorcha" src="https://i.gifer.com/5Mz4.gif" alt="gif">
+				<img id="antorcha2" class="antorcha" src="https://i.gifer.com/5Mz4.gif" alt="gif">
+			</div>
+			<div id="menu">
+				<ul>
+					<li id="seleccionPersonaxe">Seleccionar personaxe</li>
+					<li id="cargarClasificacion">Taboa clasificatoria</li>
+					<li id="xogar" onclick="cargarMazmorra()">Comezar</li>
+				</ul>
+			</div>
 		</div>
-	</div>
 	`;
 }
 
@@ -32,7 +31,7 @@ function cargarMazmorra() {
 
 			<div id="menuInferior">
 				<div id="sair">
-					<p onclick="cargarMenu()"><img src="./imaxes/atras_logo.png" alt="atras_logo"></p>
+					<p onclick="cargarMenu()"><img src="./imaxes/atras_icono.png" alt="atras_icono"></p>
 				</div>
 				<div id="itemActual">
 					<img src="./imaxes/cartas/espada.png" alt="espada.png">
@@ -55,19 +54,19 @@ function cargarCuadricula() {
 	let puntosVida = 10; // Vida do xogador
 	let danoArma = 10;
 
-	$.getJSON('./servidor/cargarCartas.php')
-	.done(function(cartas){
-		console.log(cartas);
+	$.getJSON('./servidor/cargarInimigos.php')
+	.done(function(inimigos){
+		console.log(inimigos);
 		for (let i = 0; i < NUM_CELAS; i++) {
 			if(i != 4){ // Na posición central da cuadricula poñemos ao xogador
 				cuadricula.innerHTML += `
 				<div class="cela">
 					<div class="puntosVida">
-						<label>${cartas[i].vida}</label>
+						<label>${inimigos[i].vida}</label>
 						<img src="./imaxes/corazon.png" alt="">
 					</div>
-					<img src="./imaxes/cartas/morcego.png" alt="">
-					<p class="nomeItem">Morcego</p>
+					<img src="./imaxes/cartas/${inimigos[i].nome}.png" alt="">
+					<p class="nomeItem">${inimigos[i].nome}</p>
 					<div class="cantidade"></div>
 				</div>
 			`;
@@ -89,8 +88,8 @@ function cargarCuadricula() {
 			}
 		}
 	})
-	.fail(function(){
-		alert('Erro ao cargar as cartas');
+	.fail(function(erro){
+		alert('Erro ao cargar entrar na mazmorra');
 	})
 }
 

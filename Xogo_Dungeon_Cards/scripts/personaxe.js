@@ -8,7 +8,7 @@ $('document').ready(function(){
   let filaFin = 3;
 
   // Lista codigo teclas javascript -> https://www.freecodecamp.org/espanol/news/lista-de-codigos-de-teclas-en-javascript/
-  // window.addEventListener("keydown", evento => {
+  window.addEventListener("keydown", evento => {
     switch (evento.key) {
       case "ArrowUp":
         if((filaInicio > 1) && (filaFin > 2)){// Deter o personaxe ao chegar ao límite superior
@@ -50,7 +50,7 @@ $('document').ready(function(){
         alert("Para mover o personaxe usa as frechas do teclado")
         break;
     }
-  // });
+  });
 });
 
 
