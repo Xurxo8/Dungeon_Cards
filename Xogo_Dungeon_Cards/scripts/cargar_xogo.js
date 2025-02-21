@@ -68,30 +68,68 @@ for (let f = 1; f <= FILAS; f++) {
 	}	
 }
 
-console.log(taboleiro);
-
 // Array do que cargaremos os items ou inimigos
 // let mazo = [cargarInimigos, cargarArmas, cargarObxectos];
+let mazo = ['🟥', '🟩', '🟨'];
+
+// =============== RULETA PONDERADA ===============
+function elementoAleatorio() {
+	const PESOS = [0.45, 0.45, 0.1]; // Probabilidades para INIMIGOS, ARMAS e OBXECTOS
+	let random = Math.random();
+	let sum = 0;
+
+	for (let i = 0; i < PESOS.length; i++) {
+		sum += PESOS[i];
+		if (random <= sum) {
+			return mazo[i];
+		}
+	}
+}
+
+// ==================================================================
+// =============== CREAR E ENCHER GRILLA NO DOM ===============
+// ==================================================================
+// Enchemos a grilla con items e inimigos
+for (let f = 0; f < FILAS.length; f++) {
+	for (let c = 0; c < COLUMNAS.length; c++) {
+		taboleiro.set(`${f},${c}`, elementoAleatorio())
+	}
+}
 
 // Colocamos o personaxe no centro do taboleiro
-taboleiro.set('2,2', "👾");
+taboleiro.set('2,2', `
+	<div id="arma">
+		<img src="./imaxes/cartas/espada.png" alt="">
+	</div>
+	<div class="puntosVida">
+		<label>10/10</label>
+		<img src="./imaxes/corazon.png" alt="">
+	</div>
+	<img src="./imaxes/personaxes/cabaleiro.png" alt="">
+	<p class="nomeItem">Heroe</p>
+	<div class="cantidade">10</div>
+`);
 
-console.log(taboleiro);
-
-
-// Renderizar a grilla no DOM
 function renderGrid(){
 	$('#cuadricula').html(""); // Limpar taboleiro
 
 	for (let f = 1; f <= FILAS; f++) {
 		for(let c = 1; c <= COLUMNAS; c++){
-			taboleiro.get(`${f},${c}`) || "🟨";
+			let cela = "";
+			if(f == 2 && c == 2){
+				cela = $('<div class="cela" id="xogador"></div>');// cela para o xogador
+			}else{
+				cela = $('<div class="cela"></div>'); // cela para inimigos e obxectos
+			}
+			cela.append(taboleiro.get(`${f},${c}`) || elementoAleatorio())// Engadimoslle contido do map() a cela
+			$('#cuadricula').append(cela);// Metemos a cela na cuadricula
 		}		
 	}
 }
 
-console.log(taboleiro);
-
+// ==================================================================
+// =============== CARGAR CUADRICULA ===============
+// ==================================================================
 function cargarCuadricula() {
 	const NUM_CELAS = 9;
 	let centro = Math.trunc(NUM_CELAS / 2);
@@ -144,7 +182,7 @@ function tutorial(){
 }
 
 // ==================================================================
-// ========== FUNCION PARA CARGAR INIMIGOS ==========
+// =============== CARGAR INIMIGOS ===============
 // ==================================================================
 // function cargarInimigos(){
 // 	$.getJSON('./servidor/cargarInimigos.php')
@@ -157,7 +195,7 @@ function tutorial(){
 // }
 
 // ==================================================================
-// ========== FUNCION PARA CARGAR OBXETOS ==========
+// =============== CARGAR OBEXECTOS ===============
 // ==================================================================
 // function cargarObxectos(){
 // 	$.getJSON('./servidor/cargarObxectos.php')
@@ -170,7 +208,7 @@ function tutorial(){
 // }
 
 // ==================================================================
-// ========== FUNCION PARA CARGAR ARMA ==========
+// =============== CARGAR ARMAS ===============
 // ==================================================================
 // function cargarArmas(){
 // 	$.getJSON('./servidor/cargarArma.php')
