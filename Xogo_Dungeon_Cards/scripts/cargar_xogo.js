@@ -68,9 +68,107 @@ for (let f = 1; f <= FILAS; f++) {
 	}	
 }
 
+// ====================================================================================================================
+
+// ==================================================================
+// =============== CARGAR INIMIGOS ===============
+// ==================================================================
+function cargarInimigos() {
+	// Retorna a promesa que devuelve $.getJSON
+	return $.getJSON('./servidor/cargarInimigos.php')
+		.then(function(inimigos) {
+				let codInimigo = numerosAleatorios(0, inimigos.length);
+
+				let inimigo = `
+					<div class="puntosVida">
+						<label>${inimigos[codInimigo].vida}</label>
+						<img src="./imaxes/corazon.png" alt="">
+					</div>
+					<img src="./imaxes/cartas/${inimigos[codInimigo].nome}.png" alt="">
+					<p class="nomeItem">${inimigos[codInimigo].nome}</p>
+					<div class="cantidade"></div>
+				`;
+
+				return inimigo;
+		})
+		.catch(function(erro) {
+				let alerta = alert("ERRO ao cargar inimigos");
+				return alerta;
+		});
+}
+
+
+// ==================================================================
+// =============== CARGAR OBEXECTOS ===============
+// ***** Máis adiante pasaremos a puntuación do usuario para incrementar a dificultade gradualmente *****
+// ==================================================================
+function cargarObxectos(){
+	return $.getJSON('./servidor/cargarObxectos.php')
+		.then(function(obxectos) {
+				let codObxecto = numerosAleatorios(0, obxectos.length);
+				let cantidade = "";
+
+				switch (obxecto.nome) {
+					case 'pocion_vida':
+						cantidade = obxectos.puntos_vida;
+						break;
+
+					case 'pocion_veleno':
+						cantidade = obxectos.puntos_vida;
+						break;
+
+					case 'moeda':
+						cantidade = obxecto.puntos_partida;
+						break;
+				}
+
+				let obxecto = `
+					<div class="puntosVida">
+						<label></label>
+					</div>
+					<img src="./imaxes/cartas/${obxectos[codObxecto].nome}.png" alt="">
+					<p class="nomeItem">${obxectos[codObxecto].nome}</p>
+					<div class="cantidade">${obxectos.puntosPartida}</div>
+				`;
+
+				return obxecto;
+		})
+		.catch(function(erro) {
+				let alerta = alert("ERRO ao cargar obexectos");
+				return alerta;
+		});
+}
+
+// ==================================================================
+// =============== CARGAR ARMAS ===============
+// ==================================================================
+function cargarArmas(){
+	return $.getJSON('./servidor/cargarArmas.php')
+		.then(function(armas) {
+				let codArma = numerosAleatorios(0, armas.length);
+
+				let arma = `
+					<div class="puntosVida">
+						<label>${armas[codArma].vida}</label>
+						<img src="./imaxes/corazon.png" alt="">
+					</div>
+					<img src="./imaxes/cartas/${armas[codArma].nome}.png" alt="">
+					<p class="nomeItem">${armas[codArma].nome}</p>
+					<div class="cantidade"></div>
+				`;
+
+				return arma;
+		})
+		.catch(function(erro) {
+				let alerta = alert("ERRO ao cargar o armamento");
+				return alerta;
+		});
+}
+
+// ====================================================================================================================
+
 // Array do que cargaremos os items ou inimigos
-// let mazo = [cargarInimigos, cargarArmas, cargarObxectos];
-let mazo = ['🟥', '🟩', '🟨'];
+let mazo = [cargarInimigos, cargarArmas, cargarObxectos];
 
 // =============== RULETA PONDERADA ===============
 function elementoAleatorio() {
@@ -81,7 +179,8 @@ function elementoAleatorio() {
 	for (let i = 0; i < PESOS.length; i++) {
 		sum += PESOS[i];
 		if (random <= sum) {
-			return mazo[i];
+			// Executamos a función seleccionada e devolvemos o resultado
+			return mazo[i](); 
 		}
 	}
 }
@@ -90,9 +189,9 @@ function elementoAleatorio() {
 // =============== CREAR E ENCHER GRILLA NO DOM ===============
 // ==================================================================
 // Enchemos a grilla con items e inimigos
-for (let f = 0; f < FILAS.length; f++) {
-	for (let c = 0; c < COLUMNAS.length; c++) {
-		taboleiro.set(`${f},${c}`, elementoAleatorio())
+for (let f = 1; f <= FILAS; f++) {
+	for (let c = 1; c <= COLUMNAS; c++) {
+		taboleiro.set(`${f},${c}`, elementoAleatorio());// Executamos as funcions ao chamalas co doble parentesis
 	}
 }
 
@@ -110,19 +209,27 @@ taboleiro.set('2,2', `
 	<div class="cantidade">10</div>
 `);
 
-function renderGrid(){
+console.log(taboleiro);
+
+// ==================================================================
+// =============== RENDERIZAR O GRID ===============
+// ==================================================================
+async function renderGrid(){
 	$('#cuadricula').html(""); // Limpar taboleiro
 
 	for (let f = 1; f <= FILAS; f++) {
 		for(let c = 1; c <= COLUMNAS; c++){
 			let cela = "";
-			if(f == 2 && c == 2){
-				cela = $('<div class="cela" id="xogador"></div>');// cela para o xogador
+			if(f == 2 && c == 2){// No caso de ser a cela central do taboleiro
+				cela = $('<div id="xogador" class="cela" ></div>');// cela para o xogador
 			}else{
 				cela = $('<div class="cela"></div>'); // cela para inimigos e obxectos
 			}
-			cela.append(taboleiro.get(`${f},${c}`) || elementoAleatorio())// Engadimoslle contido do map() a cela
-			$('#cuadricula').append(cela);// Metemos a cela na cuadricula
+			// cela.append(taboleiro.get(`${f},${c}`) || elementoAleatorio())// Engadimoslle contido do map() a cela
+			// $('#cuadricula').append(cela);// Metemos a cela na cuadricula
+			let elemento = await elementoAleatorio();
+			cela.append(elemento);
+			$('#cuadricula').append(cela);
 		}		
 	}
 }
@@ -172,50 +279,13 @@ function cargarCuadricula() {
 	})
 	.fail(function(erro){
 		alert('Erro ao entrar na mazmorra');
-		console.log(erro);
 	});
 }
-
 
 function tutorial(){
 	alert(" Para mover o personaxe utiliza as frechas do teclado")
 }
 
-// ==================================================================
-// =============== CARGAR INIMIGOS ===============
-// ==================================================================
-// function cargarInimigos(){
-// 	$.getJSON('./servidor/cargarInimigos.php')
-// 		.done(function(inimigos){
-// 			console.log("Inimigos ben");
-// 		})
-// 		.fail(function(erro){
-// 			alert("ERRO ao cargar inimigos");
-// 		})
-// }
 
-// ==================================================================
-// =============== CARGAR OBEXECTOS ===============
-// ==================================================================
-// function cargarObxectos(){
-// 	$.getJSON('./servidor/cargarObxectos.php')
-// 		.done(function(inimigos){
-// 			console.log("Obxectos ben");
-// 		})
-// 		.fail(function(erro){
-// 			alert("ERRO ao cargar obxetos");
-// 		})
-// }
 
-// ==================================================================
-// =============== CARGAR ARMAS ===============
-// ==================================================================
-// function cargarArmas(){
-// 	$.getJSON('./servidor/cargarArma.php')
-// 		.done(function(inimigos){
-// 			console.log("Armas ben");
-// 		})
-// 		.fail(function(erro){
-// 			alert("ERRO ao cargar armamento");
-// 		})
-// }
+
