@@ -46,7 +46,9 @@ body{
 			justify-items: center;
 			align-items: center;
 
-			& .cela{
+			& .cela,
+        .inimigo,
+        .arma{
 				position: relative;
 				height: 95%;
 				width: 95%;
@@ -63,6 +65,14 @@ body{
 					height: 70%;
 					width: 90%;
 				}
+
+        & .pocion_vida,
+          .pocion_veleno,
+          .moeda {
+            height: 35%;
+            width: 50%;
+            margin: 20%;
+          }
 
 				& .puntosVida{
 					position: absolute;
@@ -130,7 +140,7 @@ body{
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				background-color: var(--sair);
+				background-color: var(--gris-oscuro);
 				cursor: pointer;
 
 				& p{

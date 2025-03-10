@@ -11,7 +11,7 @@
 	--puntos: #fce76d;
 	--vida: #d08d60;
 	--dourado: #daa520;
-	--sair: #424242;
+	--gris-oscuro: #424242;
 	--gris: #777777;
 }
 
@@ -78,37 +78,6 @@ body{
 					background-color: var(--puntos);
 				}
 			}
-
-			/* & #seleccionPersonaxe{
-				display: flex;
-				justify-content: center;
-				align-items: center;
-
-				& img{
-					width: 45%;
-				}
-			} */
-
-			/* & #xogar{
-				display: flex;
-				justify-content: center;
-				align-items: center;
-
-				& p{
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					width: 25%;
-					height: 25%;
-
-					& img{
-						width: 95%;
-						background-color: var(--boton);
-						padding: 5px 15px;
-						border: 2px solid white;
-					}
-				}
-			}			 */
 		}
 	}
 }
